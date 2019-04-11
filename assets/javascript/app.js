@@ -1,24 +1,18 @@
 $(document).ready(function(){
     const timeForQuestion = 20,   /* Time given for answering question. */
           interval = 1000, /* Count down time interval. */
-          timeBetweenQuestion  = 10000; /* Time to display answer to question. */
+          timeBetweenQuestion  = 5000; /* Time to display answer to question. */
   
     var arrQuestions = new Questions(),
         numberQuestions = 0,
         timeRemaining = 0, 
-        intervalID,
-        timeoutID;
-  
-    var audioInit = new Audio("assets/sound/WhoLetTheDogsOut.mp3");
-  
+        intervalID;
     
     (function initialize() {         //this function is initialized when the game begins
       $("#start-btn").show();
       $("#time-remain, #question-container, #answer-container, #result-container, #progress-container").hide();
   
-      audioInit.play();
-      audioInit.loop = true;
-    })();          // ES6 ---> () is after to show that function occurs
+      })();          // ES6 ---> () is after to show that function occurs
   
     function startTimer() {         // Function to start decreasing time by 1 seconds for each question
       timeRemaining = timeForQuestion + 1; /* Due to decrementing before displaying */
@@ -36,14 +30,14 @@ $(document).ready(function(){
   
     function processResults() {       // Adds to number of correct, incorrect, and unanswered questions
       var correct    = 0,
-          inncorrect  = 0,
+          incorrect  = 0,
           unanswered = 0;
   
       for (let i = 0; i < arrQuestions.length; i++) {      //iterates through array of questions
   
         /* If question has not been answered, it is undefined. */
         if (typeof(arrQuestions[i].isCorrect) === "undefined") {        // if user doesn't answer
-          unnanswered++;
+          unanswered++;
         }
         else {
           (arrQuestions[i].isCorrect) ? correct++ : incorrect++;      // Conditional statement -> if questions is correct, and if question is incorrect 
@@ -51,7 +45,7 @@ $(document).ready(function(){
       }
   
       return [correct,               // return the results of the array at the end of the game
-              inncorrect,
+              incorrect,
               unanswered];
     }
   
@@ -117,7 +111,7 @@ $(document).ready(function(){
   
       $("#answer-text").html("<h2 id='" + stringID + "'" + ">" + stringText + "</h2>");      // once stringID and stringText has been set, this is the text that appears
   
-      var imageDiv = $("<img>").addClass("img-responsive center-block")      
+      var imageDiv = $("<img>").addClass("img-fluid center-block")      
                              .attr("id", "jpg")
                              .attr("src", imagePath + objQuestion.image)       // image link from our local folder
                              .attr("alt", "Image for Answer");       
@@ -130,12 +124,12 @@ $(document).ready(function(){
   
 
     function renderResults() {         // render the results container
-      var results = [];
+      var results = [];       // empty results array
   
-      $("#time-remain, #answer-container, #progress-container").hide();
-      $("#result-container").show();
+      $("#time-remain, #answer-container, #progress-container").hide();    // hide these containers
+      $("#result-container").show();       // show the results container
   
-      results = processResults();
+      results = processResults();        // results array becomes the processResults array
   
       $("#comment").text("You are done! Let's take a look at your results.");
       $("#correct").text("Correct Answers: " + results[0]);
@@ -143,55 +137,40 @@ $(document).ready(function(){
       $("#unanswered").text("Unanswered: " + results[2]);    
     }
   
-    /** 
-     * @function clickStart 
-     * @description Performs required processing when start or restart button is chosen.
-    */
-    function clickStart() {
-      audioInit.pause();
   
-      $("#start-btn, #answer-container, #result-container").hide();
-      $("#time-remain").show();
+    function start() {      // what happens when user clicks start button
+      
   
-      numberQuestions = 0;
+      $("#start-btn, #answer-container, #result-container").hide();      // hide these containers
+      $("#time-remain").show();        // shows time remaining
   
-      renderQuestion();
+      numberQuestions = 0;            
+  
+      renderQuestion();         // renders the first question
     }
   
-    /** 
-     * @function clickAnswer 
-     * @description Performs required processing when answer is chosen.
-    */
-    function clickAnswer() {
-      stopTimer();
   
-      var strChosen = $(this).attr("id"),
-          objQuestion = arrQuestions[numberQuestions];
+    function clickAnswer() {        // what happens when user clicks an option
+      stopTimer();           // stops the timer
   
-      objQuestion.isCorrect = (parseInt(strChosen.charAt(strChosen.length-1)) === 
-                                        objQuestion.answer) ? true : false;
+      var userChoice = $(this).attr("id"),                
+          objQuestion = arrQuestions[numberQuestions];    // question object becomes the an answer choice       
+  
+      objQuestion.isCorrect = (parseInt(userChoice.charAt(userChoice.length-1)) === objQuestion.answer) ? true : false;      // is the user choice matches the question object...
     
-      renderAnswer(objQuestion);
+      renderAnswer(objQuestion);       // renders if the user's answers
     }
   
-    /** 
-     * @event .on ("click") 
-     * @listens .start When start or restart button is chosen. 
-     * @param {function} clickStart
-    */
-    $(".start").on("click", clickStart);
+
+    /* ON-CLICK FUNCTIONALITY */
+
+    $(".start").on("click", start);        // start button
   
-    /** 
-     * @event .on ("click") 
-     * @listens .choice When answer for a question is chosen. 
-     * @param {function} clickAnswer
-    */
-    $(".choice").on("click", clickAnswer);
+    
+    $(".choice").on("click", clickAnswer);      // clicking an answer button
   
-    /*
-      This code addresses the problem of the sticky hover on a touch screen device. The code was copied from the following website: http://www.javascriptkit.com/dhtmltutors/sticky-hover-issue-solutions.shtml
-    */
-   document.addEventListener('touchstart', function addtouchclass(e) {
+    
+   document.addEventListener('touchstart', function addtouchclass(e) {         // Fixes sticky hover
     document.documentElement.classList.add('can-touch')
     document.removeEventListener('touchstart', addtouchclass, false)
   }, false)});

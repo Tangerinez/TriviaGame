@@ -31,6 +31,7 @@ body {
   #title {
     color: rgb(207, 207, 206);
     font-family: 'Bungee', cursive;
+    margin-top: 2%;
   }
   
   .btn-lg {
@@ -104,21 +105,38 @@ body {
   }
 
   h3 {
-      text-align: center;
+    text-align: center;
   }
 
   .center-block {
-      margin: 0 auto;
+    margin: 0 auto;
   }
 
   #time-remain {
-    color: gray;
+    color: rgb(207, 207, 206);
   }
 
   #question {
-    color: gray;
+    color: rgb(207, 207, 206);
   }
 
   #unanswered {
-    color: gray;
+    color: rgb(207, 207, 206);
+  }
+
+  #comment {
+    color: rgb(207, 207, 206);
+  }
+
+  #question-container {
+    margin-bottom: 2%;
+  }
+
+  .progress-bar {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  #progress-text {
+    color: rgb(207, 207, 206);
   }

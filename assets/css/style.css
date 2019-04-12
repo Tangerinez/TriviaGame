@@ -140,3 +140,23 @@ body {
   #progress-text {
     color: rgb(207, 207, 206);
   }
+
+  #answer-img {
+    margin-bottom: 0.8%;
+  }
+
+  @media screen and (min-width: 992px) {
+    #answer-img {
+      position: relative;
+      left: 13%;
+      bottom: 2%;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    #answer-img {
+      position: relative;
+      left: 20%;
+      bottom: 2%;
+    }
+  }

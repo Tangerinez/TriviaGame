@@ -1,7 +1,7 @@
 $(document).ready(function(){
     const timeForQuestion = 20,   /* Time given for answering question. */
           interval = 1000, /* Count down time interval. */
-          timeBetweenQuestion  = 5000; /* Time to display answer to question. */
+          timeBetweenQuestion  = 20000; /* Time to display answer to question. */
   
     var arrQuestions = new Questions(),
         numberQuestions = 0,
